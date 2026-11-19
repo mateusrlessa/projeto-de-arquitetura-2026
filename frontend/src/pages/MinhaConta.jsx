@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Campo, { estiloInput } from '../components/Campo.jsx'
+import CampoSenha from '../components/CampoSenha.jsx'
 import Cartao, { TituloPagina } from '../components/Cartao.jsx'
 import FotoPerfil from '../components/FotoPerfil.jsx'
-import { Alerta, Cadeado, Check, Contato, Envelope, Fechar, Olho, OlhoRiscado, Usuario } from '../components/Icones.jsx'
+import { Alerta, Cadeado, Check, Contato, Envelope, Fechar, Usuario } from '../components/Icones.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { api } from '../lib/api.js'
 import { EMAIL, erroNovaSenha } from '../lib/validacao.js'
@@ -62,21 +63,6 @@ function ErroGeral({ children }) {
   )
 }
 
-function CampoSenha({ rotulo, erro, valor, aoAlterar, mostrar, autoComplete, placeholder }) {
-  return (
-    <Campo rotulo={rotulo} erro={erro}>
-      <input
-        type={mostrar ? 'text' : 'password'}
-        value={valor}
-        onChange={aoAlterar}
-        autoComplete={autoComplete}
-        placeholder={placeholder}
-        className={estiloInput(erro)}
-      />
-    </Campo>
-  )
-}
-
 function DadosBasicos({ usuario, aoSalvar }) {
   const form = useFormulario({ nome: usuario.nome_completo })
   const alterado = form.campos.nome.trim() !== usuario.nome_completo
@@ -108,7 +94,6 @@ function DadosBasicos({ usuario, aoSalvar }) {
 
 function TrocarEmail({ usuario, aoSalvar }) {
   const form = useFormulario({ email: '', senhaAtual: '' })
-  const [mostrar, setMostrar] = useState(false)
 
   async function salvar(e) {
     e.preventDefault()
@@ -144,9 +129,8 @@ function TrocarEmail({ usuario, aoSalvar }) {
         <CampoSenha
           rotulo="Senha atual"
           erro={form.erros.senhaAtual}
-          valor={form.campos.senhaAtual}
-          aoAlterar={form.alterar('senhaAtual')}
-          mostrar={mostrar}
+          value={form.campos.senhaAtual}
+          onChange={form.alterar('senhaAtual')}
           autoComplete="current-password"
           placeholder="Para confirmar que é você"
         />
@@ -154,7 +138,6 @@ function TrocarEmail({ usuario, aoSalvar }) {
           <button type="submit" disabled={form.enviando} className={botaoSalvar}>
             <Check tamanho={16} /> {form.enviando ? 'Salvando…' : 'Trocar e-mail'}
           </button>
-          <BotaoMostrar mostrar={mostrar} aoAlternar={() => setMostrar((m) => !m)} />
         </div>
         <p className="text-xs text-suave">O novo endereço precisa ser confirmado pelo link que enviaremos para ele.</p>
       </form>
@@ -165,7 +148,6 @@ function TrocarEmail({ usuario, aoSalvar }) {
 function TrocarSenha({ usuario, aoSalvar }) {
   const { entrar, sair } = useAuth()
   const form = useFormulario({ senhaAtual: '', nova: '', confirmar: '' })
-  const [mostrar, setMostrar] = useState(false)
 
   async function salvar(e) {
     e.preventDefault()
@@ -204,27 +186,24 @@ function TrocarSenha({ usuario, aoSalvar }) {
         <CampoSenha
           rotulo="Senha atual"
           erro={form.erros.senhaAtual}
-          valor={form.campos.senhaAtual}
-          aoAlterar={form.alterar('senhaAtual')}
-          mostrar={mostrar}
+          value={form.campos.senhaAtual}
+          onChange={form.alterar('senhaAtual')}
           autoComplete="current-password"
         />
         <div className="grid gap-4 sm:grid-cols-2">
           <CampoSenha
             rotulo="Nova senha"
             erro={form.erros.nova}
-            valor={form.campos.nova}
-            aoAlterar={form.alterar('nova')}
-            mostrar={mostrar}
+            value={form.campos.nova}
+            onChange={form.alterar('nova')}
             autoComplete="new-password"
             placeholder="Mínimo de 8 caracteres"
           />
           <CampoSenha
             rotulo="Confirmar nova senha"
             erro={form.erros.confirmar}
-            valor={form.campos.confirmar}
-            aoAlterar={form.alterar('confirmar')}
-            mostrar={mostrar}
+            value={form.campos.confirmar}
+            onChange={form.alterar('confirmar')}
             autoComplete="new-password"
             placeholder="Repita a nova senha"
           />
@@ -233,7 +212,6 @@ function TrocarSenha({ usuario, aoSalvar }) {
           <button type="submit" disabled={form.enviando} className={botaoSalvar}>
             <Check tamanho={16} /> {form.enviando ? 'Salvando…' : 'Trocar senha'}
           </button>
-          <BotaoMostrar mostrar={mostrar} aoAlternar={() => setMostrar((m) => !m)} />
         </div>
         <p className="text-xs text-suave">
           Entrou só com o Google e ainda não tem senha? Crie uma em{' '}
@@ -241,15 +219,6 @@ function TrocarSenha({ usuario, aoSalvar }) {
         </p>
       </form>
     </Cartao>
-  )
-}
-
-function BotaoMostrar({ mostrar, aoAlternar }) {
-  return (
-    <button type="button" onClick={aoAlternar} className="inline-flex items-center gap-1.5 text-sm font-medium text-suave hover:text-tinta">
-      {mostrar ? <OlhoRiscado tamanho={16} /> : <Olho tamanho={16} />}
-      {mostrar ? 'Ocultar senhas' : 'Mostrar senhas'}
-    </button>
   )
 }
 

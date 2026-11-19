@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import Campo, { estiloInput } from '../components/Campo.jsx'
-import { Olho, OlhoRiscado } from '../components/Icones.jsx'
+import CampoSenha from '../components/CampoSenha.jsx'
 import { api, salvarSessao } from '../lib/api.js'
 import { erroNovaSenha, lerTokenDoLink } from '../lib/validacao.js'
 import { LinkInvalido } from './RecuperarSenha.jsx'
@@ -12,7 +11,6 @@ export default function NovaSenha() {
 
   const [senha, setSenha] = useState('')
   const [confirmar, setConfirmar] = useState('')
-  const [mostrar, setMostrar] = useState(false)
   const [erros, setErros] = useState({})
   const [enviando, setEnviando] = useState(false)
   const [estado, setEstado] = useState(token ? 'formulario' : 'invalido')
@@ -62,37 +60,23 @@ export default function NovaSenha() {
 
       {estado === 'formulario' && (
         <form onSubmit={enviar} noValidate className="space-y-5">
-          <Campo rotulo="Nova senha" erro={erros.senha}>
-            <div className="relative">
-              <input
-                type={mostrar ? 'text' : 'password'}
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-                autoComplete="new-password"
-                placeholder="Mínimo de 8 caracteres"
-                className={`${estiloInput(erros.senha)} pr-11`}
-              />
-              <button
-                type="button"
-                onClick={() => setMostrar((m) => !m)}
-                aria-label={mostrar ? 'Ocultar senha' : 'Mostrar senha'}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-suave hover:text-tinta"
-              >
-                {mostrar ? <OlhoRiscado /> : <Olho />}
-              </button>
-            </div>
-          </Campo>
+          <CampoSenha
+            rotulo="Nova senha"
+            erro={erros.senha}
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            autoComplete="new-password"
+            placeholder="Mínimo de 8 caracteres"
+          />
 
-          <Campo rotulo="Confirmar nova senha" erro={erros.confirmar}>
-            <input
-              type={mostrar ? 'text' : 'password'}
-              value={confirmar}
-              onChange={(e) => setConfirmar(e.target.value)}
-              autoComplete="new-password"
-              placeholder="Repita a senha"
-              className={estiloInput(erros.confirmar)}
-            />
-          </Campo>
+          <CampoSenha
+            rotulo="Confirmar nova senha"
+            erro={erros.confirmar}
+            value={confirmar}
+            onChange={(e) => setConfirmar(e.target.value)}
+            autoComplete="new-password"
+            placeholder="Repita a senha"
+          />
 
           <button
             type="submit"

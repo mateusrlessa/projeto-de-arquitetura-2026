@@ -2,7 +2,8 @@ import { useRef, useState } from 'react'
 import { Navigate, useLocation, useNavigate, useNavigationType, useSearchParams } from 'react-router-dom'
 import BotaoGoogle from '../components/BotaoGoogle.jsx'
 import Campo, { estiloInput } from '../components/Campo.jsx'
-import { Alerta, Coracao, Escudo, Olho, OlhoRiscado, Pessoas } from '../components/Icones.jsx'
+import CampoSenha from '../components/CampoSenha.jsx'
+import { Alerta, Coracao, Escudo, Pessoas } from '../components/Icones.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { EMAIL, erroNovaSenha } from '../lib/validacao.js'
 
@@ -143,7 +144,6 @@ function Formulario({ modo, voltarPara, emailInicial, aoAlterarEmail, autoFocar,
 
   const [tipo, setTipo] = useState('CONTRATANTE')
   const [campos, setCampos] = useState({ nome: '', email: emailInicial, senha: '', confirmar: '' })
-  const [mostrar, setMostrar] = useState(false)
   const [erros, setErros] = useState({})
   const [erroGeral, setErroGeral] = useState('')
   const [enviando, setEnviando] = useState(false)
@@ -246,37 +246,23 @@ function Formulario({ modo, voltarPara, emailInicial, aoAlterarEmail, autoFocar,
       </Campo>
 
       <div className={criar ? 'grid gap-5 sm:grid-cols-2' : ''}>
-        <Campo rotulo="Senha" erro={erros.senha}>
-          <div className="relative">
-            <input
-              type={mostrar ? 'text' : 'password'}
-              value={campos.senha}
-              onChange={alterar('senha')}
-              autoComplete={criar ? 'new-password' : 'current-password'}
-              placeholder={criar ? 'Mínimo de 8 caracteres' : '••••••••'}
-              className={`${estiloInput(erros.senha)} pr-11`}
-            />
-            <button
-              type="button"
-              onClick={() => setMostrar((m) => !m)}
-              aria-label={mostrar ? 'Ocultar senha' : 'Mostrar senha'}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-suave hover:text-tinta"
-            >
-              {mostrar ? <OlhoRiscado /> : <Olho />}
-            </button>
-          </div>
-        </Campo>
+        <CampoSenha
+          rotulo="Senha"
+          erro={erros.senha}
+          value={campos.senha}
+          onChange={alterar('senha')}
+          autoComplete={criar ? 'new-password' : 'current-password'}
+          placeholder={criar ? 'Mínimo de 8 caracteres' : '••••••••'}
+        />
         {criar && (
-          <Campo rotulo="Confirmar senha" erro={erros.confirmar}>
-            <input
-              type={mostrar ? 'text' : 'password'}
-              value={campos.confirmar}
-              onChange={alterar('confirmar')}
-              autoComplete="new-password"
-              placeholder="Repita a senha"
-              className={estiloInput(erros.confirmar)}
-            />
-          </Campo>
+          <CampoSenha
+            rotulo="Confirmar senha"
+            erro={erros.confirmar}
+            value={campos.confirmar}
+            onChange={alterar('confirmar')}
+            autoComplete="new-password"
+            placeholder="Repita a senha"
+          />
         )}
       </div>
 

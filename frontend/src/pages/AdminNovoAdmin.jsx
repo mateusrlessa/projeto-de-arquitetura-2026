@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Campo, { estiloInput } from '../components/Campo.jsx'
 import { TituloPagina } from '../components/Cartao.jsx'
-import { Alerta, Check, Escudo, Olho, OlhoRiscado } from '../components/Icones.jsx'
+import CampoSenha from '../components/CampoSenha.jsx'
+import { Alerta, Check, Escudo } from '../components/Icones.jsx'
 import { api } from '../lib/api.js'
 import { EMAIL, erroNovaSenha } from '../lib/validacao.js'
 
@@ -20,7 +21,6 @@ function validar(campos) {
 
 export default function AdminNovoAdmin() {
   const [campos, setCampos] = useState(VAZIO)
-  const [mostrar, setMostrar] = useState(false)
   const [erros, setErros] = useState({})
   const [erroGeral, setErroGeral] = useState('')
   const [enviando, setEnviando] = useState(false)
@@ -100,36 +100,22 @@ export default function AdminNovoAdmin() {
         </Campo>
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <Campo rotulo="Senha" erro={erros.senha}>
-            <div className="relative">
-              <input
-                type={mostrar ? 'text' : 'password'}
-                value={campos.senha}
-                onChange={alterar('senha')}
-                autoComplete="new-password"
-                placeholder="Mínimo de 8 caracteres"
-                className={`${estiloInput(erros.senha)} pr-11`}
-              />
-              <button
-                type="button"
-                onClick={() => setMostrar((m) => !m)}
-                aria-label={mostrar ? 'Ocultar senha' : 'Mostrar senha'}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-suave hover:text-tinta"
-              >
-                {mostrar ? <OlhoRiscado /> : <Olho />}
-              </button>
-            </div>
-          </Campo>
-          <Campo rotulo="Confirmar senha" erro={erros.confirmar}>
-            <input
-              type={mostrar ? 'text' : 'password'}
-              value={campos.confirmar}
-              onChange={alterar('confirmar')}
-              autoComplete="new-password"
-              placeholder="Repita a senha"
-              className={estiloInput(erros.confirmar)}
-            />
-          </Campo>
+          <CampoSenha
+            rotulo="Senha"
+            erro={erros.senha}
+            value={campos.senha}
+            onChange={alterar('senha')}
+            autoComplete="new-password"
+            placeholder="Mínimo de 8 caracteres"
+          />
+          <CampoSenha
+            rotulo="Confirmar senha"
+            erro={erros.confirmar}
+            value={campos.confirmar}
+            onChange={alterar('confirmar')}
+            autoComplete="new-password"
+            placeholder="Repita a senha"
+          />
         </div>
 
         <button
