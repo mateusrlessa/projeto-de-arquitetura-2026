@@ -36,6 +36,18 @@ export const LinkExterno = criar(<><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1
 export const Tendencia = criar(<><path d="M3 17l6-6 4 4 8-8" /><path d="M15 7h6v6" /></>)
 export const Responder = criar(<><path d="M9 7l-5 5 5 5" /><path d="M4 12h10a6 6 0 0 1 6 6v1" /></>)
 
-export const Whatsapp = criar(<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22l5.9-2zM9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-2-1-.9.7a3.600 3.6 3.6 0 0 1-1.6-1.6l.7-.9-1-2L9 9.5z" />)
+// Preenchido (não usa o traço dos outros ícones): bolha circular com a ponta no canto inferior
+// esquerdo e o telefone centralizado.
+export function IconeWhatsApp({ className = 'h-5 w-5' }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={`shrink-0 ${className}`}>
+      <path
+        fillRule="evenodd"
+        d="M2.6 15.42A10 10 0 1 1 8.58 21.4L2 22zM12 3.8a8.2 8.2 0 1 0 0 16.4 8.2 8.2 0 0 0 0-16.4z"
+      />
+      <path d="M9.31 11.395c.72 1.415 1.88 2.57 3.295 3.295l1.1-1.1c.135-.135.335-.18.51-.12.56.185 1.165.285 1.785.285.275 0 .5.225.5.5V16c0 .275-.225.5-.5.5-4.695 0-8.5-3.805-8.5-8.5 0-.275.225-.5.5-.5h1.75c.275 0 .5.225.5.5 0 .625.1 1.225.285 1.785.055.175.015.37-.125.51l-1.1 1.1z" />
+    </svg>
+  )
+}
 export const Cadeado = criar(<><rect x="5" y="10.5" width="14" height="10" rx="2" /><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3M12 14.5v2.5" /></>)
 export const Envelope = criar(<><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3.5 6.5l8.5 6.5 8.5-6.5" /></>)

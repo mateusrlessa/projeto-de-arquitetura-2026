@@ -6,7 +6,7 @@ import Estrelas from '../components/Estrelas.jsx'
 import FormularioAvaliacao from '../components/FormularioAvaliacao.jsx'
 import ModalConfirmar from '../components/ModalConfirmar.jsx'
 import ModalDenuncia from '../components/ModalDenuncia.jsx'
-import { Alerta, Capelo, Check, Coracao, Escudo, Lapis, Lixeira, Maleta, Mensagens, OlhoRiscado, Pessoas, Pino, Relogio, SetaEsquerda, Whatsapp } from '../components/Icones.jsx'
+import { Alerta, Capelo, Check, Coracao, Escudo, Lapis, Lixeira, Maleta, Mensagens, OlhoRiscado, Pessoas, Pino, Relogio, SetaEsquerda, IconeWhatsApp } from '../components/Icones.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { api } from '../lib/api.js'
 import { ROTULOS_NOTA } from '../lib/avaliacoes.js'
@@ -42,7 +42,7 @@ function BotaoContatar({ cuidador: c }) {
           state={{ aviso: 'Para contatar um profissional, é preciso efetuar o login.', voltarPara: `/cuidadores/${c.id}` }}
           className={estiloContatar}
         >
-          <Whatsapp tamanho={20} /> Contatar
+          <IconeWhatsApp className="h-5 w-5" /> Contatar
         </Link>
         <p className="mt-2 text-xs text-suave">Converse diretamente com {primeiroNome(c.nome_completo)}</p>
       </>
@@ -52,7 +52,7 @@ function BotaoContatar({ cuidador: c }) {
   return (
     <>
       <a href={linkWhatsapp(c.telefone_whatsapp, c.nome_completo)} target="_blank" rel="noreferrer" className={estiloContatar}>
-        <Whatsapp tamanho={20} /> Contatar
+        <IconeWhatsApp className="h-5 w-5" /> Contatar
       </a>
       <p className="mt-2 text-xs text-suave">Converse diretamente com {primeiroNome(c.nome_completo)}</p>
     </>
