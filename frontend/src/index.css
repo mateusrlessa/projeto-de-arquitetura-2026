@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-titulo: "Outfit", ui-sans-serif, system-ui, sans-serif;
+
+  --color-marca: #4aabb2;
+  --color-marca-escura: #358a90;
+  --color-marca-clara: #eaf5f5;
+  --color-fundo: #f7f5f1;
+  --color-tinta: #2b3436;
+  --color-suave: #6b7678;
+  --color-borda: #dfe3e2;
+  --color-estrela: #f5a524;
+  --color-whats: #22bb66;
+}
+
+body {
+  background: var(--color-fundo);
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+}
+
+@keyframes pulso {
+  50% { opacity: 0.5; }
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(6px); }
+}

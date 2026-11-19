@@ -1,0 +1,3406 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-10-20T21:59:26.837892+00:00",
+  "__export_source": "insomnia.desktop.app:v10.0.0",
+  "resources": [
+    {
+      "_id": "wrk_cuidaaqui",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "CuidaAqui API",
+      "description": "Coleção de testes da API CuidaAqui. Execute as pastas na ordem numérica; crie e conclua uma contratação antes de avaliar.",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_cuidaaqui_base",
+      "_type": "environment",
+      "parentId": "wrk_cuidaaqui",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3001/api",
+        "admin_email": "admin@cuidaaqui.com",
+        "admin_senha": "Admin@123",
+        "cuidador_email": "maria.cuidadora@teste.com",
+        "contratante_email": "joao.contratante@teste.com",
+        "usuario_teste_email": "usuario.crud@teste.com",
+        "senha_teste": "Senha@123",
+        "token_admin": "",
+        "token_cuidador": "",
+        "token_contratante": "",
+        "cuidador_id": "",
+        "contratante_id": "",
+        "usuario_id": "",
+        "uf_teste": "ZZ",
+        "uf_cidade": "CE",
+        "cidade_id": "",
+        "especializacao_id": "",
+        "formacao_id": "",
+        "experiencia_id": "",
+        "contratacao_id": "",
+        "avaliacao_id": "",
+        "token_verificacao": "",
+        "token_recuperacao": ""
+      },
+      "dataPropertyOrder": null,
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1
+    },
+    {
+      "_id": "fld_0001",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "00 - Health",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 100
+    },
+    {
+      "_id": "req_0002",
+      "_type": "request",
+      "parentId": "fld_0001",
+      "name": "Health check",
+      "description": "GET /api/health",
+      "method": "GET",
+      "url": "{{ _.base_url }}/health",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_0003",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "01 - Usuários",
+      "description": "Cadastro publico de CUIDADOR/CONTRATANTE e gestão de usuários (ADMIN).",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 300
+    },
+    {
+      "_id": "req_0004",
+      "_type": "request",
+      "parentId": "fld_0003",
+      "name": "Create - Cadastrar CUIDADOR (público)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/usuarios",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0005",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome_completo\": \"Maria Cuidadora\",\n  \"email\": \"{{ _.cuidador_email }}\",\n  \"senha\": \"{{ _.senha_teste }}\",\n  \"tipo_usuario\": \"CUIDADOR\"\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "afterResponseScript": "if (insomnia.response.code < 300) {\n  const b = insomnia.response.json();\n  insomnia.environment.set('cuidador_id', b.id);\n}\n"
+    },
+    {
+      "_id": "req_0006",
+      "_type": "request",
+      "parentId": "fld_0003",
+      "name": "Create - Cadastrar CONTRATANTE (público)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/usuarios",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0007",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome_completo\": \"João Contratante\",\n  \"email\": \"{{ _.contratante_email }}\",\n  \"senha\": \"{{ _.senha_teste }}\",\n  \"tipo_usuario\": \"CONTRATANTE\"\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "afterResponseScript": "if (insomnia.response.code < 300) {\n  const b = insomnia.response.json();\n  insomnia.environment.set('contratante_id', b.id);\n}\n"
+    },
+    {
+      "_id": "req_0008",
+      "_type": "request",
+      "parentId": "fld_0003",
+      "name": "Create - Cadastrar usuário de teste CRUD (público)",
+      "description": "Usuário descartável usado nos testes de PUT/PATCH/DELETE abaixo.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/usuarios",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0009",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome_completo\": \"Usuário Teste CRUD\",\n  \"email\": \"{{ _.usuario_teste_email }}\",\n  \"senha\": \"{{ _.senha_teste }}\",\n  \"tipo_usuario\": \"CONTRATANTE\"\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "afterResponseScript": "if (insomnia.response.code < 300) {\n  const b = insomnia.response.json();\n  insomnia.environment.set('usuario_id', b.id);\n}\n"
+    },
+    {
+      "_id": "req_0010",
+      "_type": "request",
+      "parentId": "fld_0003",
+      "name": "Create - Cadastrar ADMIN (requer ADMIN)",
+      "description": "Somente um ADMIN autenticado pode criar outro ADMIN. Rode depois do login de ADMIN.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/usuarios",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0011",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome_completo\": \"Outro Administrador\",\n  \"email\": \"admin2@teste.com\",\n  \"senha\": \"{{ _.senha_teste }}\",\n  \"tipo_usuario\": \"ADMIN\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_0012",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "02 - Auth",
+      "description": "Os logins salvam os tokens no ambiente automaticamente.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 800
+    },
+    {
+      "_id": "req_0013",
+      "_type": "request",
+      "parentId": "fld_0012",
+      "name": "Login ADMIN",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0014",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.admin_email }}\",\n  \"senha\": \"{{ _.admin_senha }}\"\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "afterResponseScript": "if (insomnia.response.code === 200) {\n  const b = insomnia.response.json();\n  insomnia.environment.set('token_admin', b.token_acesso ?? b.token ?? b.access_token ?? b.accessToken);\n}\n"
+    },
+    {
+      "_id": "req_0015",
+      "_type": "request",
+      "parentId": "fld_0012",
+      "name": "Login CUIDADOR",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0016",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.cuidador_email }}\",\n  \"senha\": \"{{ _.senha_teste }}\"\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 1000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "afterResponseScript": "if (insomnia.response.code === 200) {\n  const b = insomnia.response.json();\n  insomnia.environment.set('token_cuidador', b.token_acesso ?? b.token ?? b.access_token ?? b.accessToken);\n}\n"
+    },
+    {
+      "_id": "req_0017",
+      "_type": "request",
+      "parentId": "fld_0012",
+      "name": "Login CONTRATANTE",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0018",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.contratante_email }}\",\n  \"senha\": \"{{ _.senha_teste }}\"\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 1100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "afterResponseScript": "if (insomnia.response.code === 200) {\n  const b = insomnia.response.json();\n  insomnia.environment.set('token_contratante', b.token_acesso ?? b.token ?? b.access_token ?? b.accessToken);\n}\n"
+    },
+    {
+      "_id": "req_0019",
+      "_type": "request",
+      "parentId": "fld_0012",
+      "name": "Me (usuário logado)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/auth/me",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 1200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0020",
+      "_type": "request",
+      "parentId": "fld_0012",
+      "name": "Refresh token",
+      "description": "Renova o token de acesso usando o cookie de sessão (HttpOnly) gravado no último login. O token do cookie é trocado a cada uso. Atenção: a sessão renovada é a do último login feito, então rode o Login ADMIN antes deste teste.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/refresh",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 1300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "afterResponseScript": "if (insomnia.response.code === 200) {\n  const b = insomnia.response.json();\n  insomnia.environment.set('token_admin', b.token_acesso ?? b.token ?? b.access_token ?? b.accessToken);\n}\n"
+    },
+    {
+      "_id": "req_0185",
+      "_type": "request",
+      "parentId": "fld_0012",
+      "name": "Confirmação de e-mail - Reenviar link",
+      "description": "Envia um novo link de confirmação para o usuário logado. Em desenvolvimento, sem SMTP_HOST, o link aparece no log do servidor.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/verificacao-email/solicitar",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 1310,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0186",
+      "_type": "request",
+      "parentId": "fld_0012",
+      "name": "Confirmação de e-mail - Confirmar",
+      "description": "Copie para a variável token_verificacao o valor que vem depois de #token= no link do log do servidor. O token vale uma vez.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/verificacao-email/confirmar",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0186",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"token\": \"{{ _.token_verificacao }}\"\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 1320,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0187",
+      "_type": "request",
+      "parentId": "fld_0012",
+      "name": "Recuperação de senha - Solicitar link",
+      "description": "Responde 202 com a mesma mensagem exista ou não a conta. Em desenvolvimento, sem SMTP_HOST, o link aparece no log do servidor.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/recuperacao-senha/solicitar",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0187",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.usuario_teste_email }}\"\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 1330,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0188",
+      "_type": "request",
+      "parentId": "fld_0012",
+      "name": "Recuperação de senha - Redefinir",
+      "description": "Copie para a variável token_recuperacao o valor que vem depois de #token= no link do log do servidor. Redefine a senha e encerra todas as sessões da conta. O token vale uma vez.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/recuperacao-senha/confirmar",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0188",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"token\": \"{{ _.token_recuperacao }}\",\n  \"senha\": \"{{ _.senha_teste }}\"\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 1340,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0022",
+      "_type": "request",
+      "parentId": "fld_0012",
+      "name": "Logout",
+      "description": "Encerra a sessão: o token de acesso e o cookie de sessão deixam de valer. Depois disso, faça login de ADMIN novamente.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/logout",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 1400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_0024",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "03 - Usuários (gestão)",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 1500
+    },
+    {
+      "_id": "req_0025",
+      "_type": "request",
+      "parentId": "fld_0024",
+      "name": "Read (lista) - Listar usuários",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/usuarios",
+      "parameters": [
+        {
+          "id": "pair_0026",
+          "name": "pagina",
+          "value": "1",
+          "disabled": false
+        },
+        {
+          "id": "pair_0027",
+          "name": "limite",
+          "value": "10",
+          "disabled": false
+        },
+        {
+          "id": "pair_0028",
+          "name": "tipo_usuario",
+          "value": "CUIDADOR",
+          "disabled": true
+        },
+        {
+          "id": "pair_0029",
+          "name": "status",
+          "value": "ATIVO",
+          "disabled": true
+        },
+        {
+          "id": "pair_0030",
+          "name": "nome",
+          "value": "Maria",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 1600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0031",
+      "_type": "request",
+      "parentId": "fld_0024",
+      "name": "Read (um) - Buscar usuário por ID",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/usuarios/{{ _.usuario_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 1700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0032",
+      "_type": "request",
+      "parentId": "fld_0024",
+      "name": "Update (completo) - PUT usuário",
+      "description": "",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/usuarios/{{ _.usuario_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0033",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome_completo\": \"Usuário Teste Atualizado\",\n  \"email\": \"{{ _.usuario_teste_email }}\",\n  \"senha\": \"NovaSenha@123\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 1800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0034",
+      "_type": "request",
+      "parentId": "fld_0024",
+      "name": "Update (parcial) - PATCH usuário",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/usuarios/{{ _.usuario_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0035",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome_completo\": \"Usuário Teste (parcial)\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 1900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0189",
+      "_type": "request",
+      "parentId": "fld_0024",
+      "name": "Update (parcial) - Trocar a própria senha (senha_atual errada)",
+      "description": "Responde 400 porque senha_atual está errada. Com a senha correta a troca é feita e todas as sessões da conta são encerradas, então será preciso fazer login de novo. Trocar o próprio e-mail também exige senha_atual. Um ADMIN pode alterar a senha e o e-mail de outra pessoa sem senha_atual.",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/usuarios/{{ _.cuidador_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0189",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"senha\": \"OutraSenha@123\",\n  \"senha_atual\": \"senha-errada\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 1950,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0036",
+      "_type": "request",
+      "parentId": "fld_0024",
+      "name": "Update (parcial) - Alterar tipo",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/usuarios/{{ _.usuario_id }}/tipo",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0037",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tipo_usuario\": \"CUIDADOR\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 2000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0038",
+      "_type": "request",
+      "parentId": "fld_0024",
+      "name": "Update (parcial) - Bloquear usuário",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/usuarios/{{ _.usuario_id }}/status",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0039",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"BLOQUEADO\",\n  \"motivo_bloqueio\": \"Teste de bloqueio via Insomnia\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 2100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0040",
+      "_type": "request",
+      "parentId": "fld_0024",
+      "name": "Delete - Excluir usuário (lógico)",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/usuarios/{{ _.usuario_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 2200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0041",
+      "_type": "request",
+      "parentId": "fld_0024",
+      "name": "Update (parcial) - Reativar usuário",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/usuarios/{{ _.usuario_id }}/status",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0042",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"ATIVO\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 2300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0043",
+      "_type": "request",
+      "parentId": "fld_0024",
+      "name": "Update - Enviar foto de perfil",
+      "description": "Selecione um arquivo JPG, PNG ou WEBP (até 5 MB) no campo 'foto'.",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/usuarios/{{ _.cuidador_id }}/foto-perfil",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0045",
+          "name": "Content-Type",
+          "value": "multipart/form-data"
+        }
+      ],
+      "body": {
+        "mimeType": "multipart/form-data",
+        "params": [
+          {
+            "id": "pair_0044",
+            "name": "foto",
+            "value": "",
+            "type": "file",
+            "fileName": "",
+            "disabled": false
+          }
+        ]
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 2400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0046",
+      "_type": "request",
+      "parentId": "fld_0024",
+      "name": "Delete - Remover foto de perfil",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/usuarios/{{ _.cuidador_id }}/foto-perfil",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 2500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_0047",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "04 - Estados",
+      "description": "A chave é a UF. uf_teste = ZZ para não colidir com estados já cadastrados.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 2600
+    },
+    {
+      "_id": "req_0048",
+      "_type": "request",
+      "parentId": "fld_0047",
+      "name": "Create - Cadastrar estado",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/estados",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0049",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"uf\": \"{{ _.uf_teste }}\",\n  \"nome\": \"Estado Teste\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 2700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0050",
+      "_type": "request",
+      "parentId": "fld_0047",
+      "name": "Read (lista) - Listar estados",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/estados",
+      "parameters": [
+        {
+          "id": "pair_0051",
+          "name": "status",
+          "value": "ATIVO",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 2800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0052",
+      "_type": "request",
+      "parentId": "fld_0047",
+      "name": "Read (um) - Buscar estado por UF",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/estados/{{ _.uf_teste }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 2900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0053",
+      "_type": "request",
+      "parentId": "fld_0047",
+      "name": "Update (completo) - PUT estado",
+      "description": "",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/estados/{{ _.uf_teste }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0054",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Estado Teste Atualizado\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 3000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0055",
+      "_type": "request",
+      "parentId": "fld_0047",
+      "name": "Update (parcial) - PATCH estado",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/estados/{{ _.uf_teste }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0056",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Estado Teste (parcial)\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 3100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0057",
+      "_type": "request",
+      "parentId": "fld_0047",
+      "name": "Delete - Excluir estado (lógico)",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/estados/{{ _.uf_teste }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 3200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0058",
+      "_type": "request",
+      "parentId": "fld_0047",
+      "name": "Update (parcial) - Reativar estado",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/estados/{{ _.uf_teste }}/status",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0059",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"ATIVO\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 3300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_0060",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "05 - Cidades",
+      "description": "A cidade é criada na UF uf_cidade (CE), que precisa existir e estar ativa.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 3400
+    },
+    {
+      "_id": "req_0061",
+      "_type": "request",
+      "parentId": "fld_0060",
+      "name": "Create - Cadastrar cidade",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/cidades",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0062",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"codigo_ibge\": 2399999,\n  \"nome\": \"Cidade Teste\",\n  \"uf\": \"{{ _.uf_cidade }}\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 3500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "afterResponseScript": "if (insomnia.response.code < 300) {\n  const b = insomnia.response.json();\n  insomnia.environment.set('cidade_id', b.id);\n}\n"
+    },
+    {
+      "_id": "req_0063",
+      "_type": "request",
+      "parentId": "fld_0060",
+      "name": "Read (lista) - Listar cidades",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cidades",
+      "parameters": [
+        {
+          "id": "pair_0064",
+          "name": "pagina",
+          "value": "1",
+          "disabled": false
+        },
+        {
+          "id": "pair_0065",
+          "name": "limite",
+          "value": "10",
+          "disabled": false
+        },
+        {
+          "id": "pair_0066",
+          "name": "nome",
+          "value": "Teste",
+          "disabled": true
+        },
+        {
+          "id": "pair_0067",
+          "name": "uf",
+          "value": "CE",
+          "disabled": true
+        },
+        {
+          "id": "pair_0068",
+          "name": "status",
+          "value": "ATIVO",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 3600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0069",
+      "_type": "request",
+      "parentId": "fld_0060",
+      "name": "Read (um) - Buscar cidade por ID",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cidades/{{ _.cidade_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 3700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0070",
+      "_type": "request",
+      "parentId": "fld_0060",
+      "name": "Update (completo) - PUT cidade",
+      "description": "",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/cidades/{{ _.cidade_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0071",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"codigo_ibge\": 2399999,\n  \"nome\": \"Cidade Teste Atualizada\",\n  \"uf\": \"{{ _.uf_cidade }}\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 3800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0072",
+      "_type": "request",
+      "parentId": "fld_0060",
+      "name": "Update (parcial) - PATCH cidade",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/cidades/{{ _.cidade_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0073",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Cidade Teste (parcial)\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 3900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0074",
+      "_type": "request",
+      "parentId": "fld_0060",
+      "name": "Delete - Excluir cidade (lógico)",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/cidades/{{ _.cidade_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 4000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0075",
+      "_type": "request",
+      "parentId": "fld_0060",
+      "name": "Update (parcial) - Reativar cidade",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/cidades/{{ _.cidade_id }}/status",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0076",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"ATIVO\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 4100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_0077",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "06 - Especializações",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 4200
+    },
+    {
+      "_id": "req_0078",
+      "_type": "request",
+      "parentId": "fld_0077",
+      "name": "Create - Cadastrar especialização",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/especializacoes",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0079",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Cuidados com Alzheimer\",\n  \"descricao\": \"Acompanhamento de idosos com Alzheimer\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 4300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "afterResponseScript": "if (insomnia.response.code < 300) {\n  const b = insomnia.response.json();\n  insomnia.environment.set('especializacao_id', b.id);\n}\n"
+    },
+    {
+      "_id": "req_0080",
+      "_type": "request",
+      "parentId": "fld_0077",
+      "name": "Read (lista) - Listar especializações",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/especializacoes",
+      "parameters": [
+        {
+          "id": "pair_0081",
+          "name": "status",
+          "value": "ATIVO",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 4400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0082",
+      "_type": "request",
+      "parentId": "fld_0077",
+      "name": "Read (um) - Buscar especialização por ID",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/especializacoes/{{ _.especializacao_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 4500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0083",
+      "_type": "request",
+      "parentId": "fld_0077",
+      "name": "Update (completo) - PUT especialização",
+      "description": "",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/especializacoes/{{ _.especializacao_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0084",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Cuidados com Alzheimer e demências\",\n  \"descricao\": \"Descrição completa atualizada\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 4600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0085",
+      "_type": "request",
+      "parentId": "fld_0077",
+      "name": "Update (parcial) - PATCH especialização",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/especializacoes/{{ _.especializacao_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0086",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"descricao\": \"Só a descrição foi alterada\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 4700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0087",
+      "_type": "request",
+      "parentId": "fld_0077",
+      "name": "Delete - Excluir especialização (lógico)",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/especializacoes/{{ _.especializacao_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 4800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0088",
+      "_type": "request",
+      "parentId": "fld_0077",
+      "name": "Update (parcial) - Reativar especialização",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/especializacoes/{{ _.especializacao_id }}/status",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0089",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"ATIVO\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 4900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_0090",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "07 - Cuidadores (perfil)",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 5000
+    },
+    {
+      "_id": "req_0091",
+      "_type": "request",
+      "parentId": "fld_0090",
+      "name": "Create - Criar perfil (próprio CUIDADOR)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/cuidadores",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0092",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"cpf\": \"52998224725\",\n  \"telefone_whatsapp\": \"85999998888\",\n  \"anos_experiencia\": 5,\n  \"funcao\": \"Cuidadora de idosos\",\n  \"sobre_mim\": \"Cuidadora com experiência em home care.\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 5100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0093",
+      "_type": "request",
+      "parentId": "fld_0090",
+      "name": "Create - Criar perfil (ADMIN para outro usuário)",
+      "description": "Alternativa à requisição anterior. Use uma OU outra (o perfil é único por usuário).",
+      "method": "POST",
+      "url": "{{ _.base_url }}/cuidadores",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0094",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"usuario_id\": \"{{ _.cuidador_id }}\",\n  \"cpf\": \"52998224725\",\n  \"telefone_whatsapp\": \"85999998888\",\n  \"anos_experiencia\": 5,\n  \"funcao\": \"Cuidadora de idosos\",\n  \"sobre_mim\": \"Criado pelo ADMIN.\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 5200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0095",
+      "_type": "request",
+      "parentId": "fld_0090",
+      "name": "Read (lista) - Listar cuidadores",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cuidadores",
+      "parameters": [
+        {
+          "id": "pair_0096",
+          "name": "pagina",
+          "value": "1",
+          "disabled": false
+        },
+        {
+          "id": "pair_0097",
+          "name": "limite",
+          "value": "10",
+          "disabled": false
+        },
+        {
+          "id": "pair_0098",
+          "name": "cidade_id",
+          "value": "{{ _.cidade_id }}",
+          "disabled": true
+        },
+        {
+          "id": "pair_0099",
+          "name": "uf",
+          "value": "CE",
+          "disabled": true
+        },
+        {
+          "id": "pair_0100",
+          "name": "especializacao_id",
+          "value": "{{ _.especializacao_id }}",
+          "disabled": true
+        },
+        {
+          "id": "pair_0101",
+          "name": "anos_experiencia_min",
+          "value": "1",
+          "disabled": true
+        },
+        {
+          "id": "pair_0102",
+          "name": "anos_experiencia_max",
+          "value": "10",
+          "disabled": true
+        },
+        {
+          "id": "pair_0103",
+          "name": "funcao",
+          "value": "idosos",
+          "disabled": true
+        },
+        {
+          "id": "pair_0104",
+          "name": "nome",
+          "value": "Maria",
+          "disabled": true
+        },
+        {
+          "id": "pair_0105",
+          "name": "nota_minima",
+          "value": "4",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 5300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0106",
+      "_type": "request",
+      "parentId": "fld_0090",
+      "name": "Read (um) - Meu perfil (CUIDADOR)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cuidadores/me",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 5400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0107",
+      "_type": "request",
+      "parentId": "fld_0090",
+      "name": "Read (um) - Buscar cuidador por ID",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 5500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0108",
+      "_type": "request",
+      "parentId": "fld_0090",
+      "name": "Update (completo) - PUT perfil",
+      "description": "",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0109",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"telefone_whatsapp\": \"85988887777\",\n  \"anos_experiencia\": 6,\n  \"funcao\": \"Cuidadora de idosos e técnica de enfermagem\",\n  \"sobre_mim\": \"Perfil totalmente atualizado.\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 5600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0110",
+      "_type": "request",
+      "parentId": "fld_0090",
+      "name": "Update (parcial) - PATCH perfil",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0111",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"anos_experiencia\": 7\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 5700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0112",
+      "_type": "request",
+      "parentId": "fld_0090",
+      "name": "Update (parcial) - Alterar CPF",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/cpf",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0113",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"cpf\": \"11144477735\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 5800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0114",
+      "_type": "request",
+      "parentId": "fld_0090",
+      "name": "Delete - Excluir perfil (lógico)",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 5900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0115",
+      "_type": "request",
+      "parentId": "fld_0090",
+      "name": "Update (parcial) - Reativar perfil",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/status",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0116",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"ATIVO\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 6000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_0117",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "08 - Formações do cuidador",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 6100
+    },
+    {
+      "_id": "req_0118",
+      "_type": "request",
+      "parentId": "fld_0117",
+      "name": "Create - Cadastrar formação",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/formacoes",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0119",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome_instituicao\": \"SENAC\",\n  \"nome_curso\": \"Cuidador de Idosos\",\n  \"ano_conclusao\": 2022\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 6200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "afterResponseScript": "if (insomnia.response.code < 300) {\n  const b = insomnia.response.json();\n  insomnia.environment.set('formacao_id', b.id);\n}\n"
+    },
+    {
+      "_id": "req_0120",
+      "_type": "request",
+      "parentId": "fld_0117",
+      "name": "Read (lista) - Listar formações",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/formacoes",
+      "parameters": [
+        {
+          "id": "pair_0121",
+          "name": "status",
+          "value": "ATIVO",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 6300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0122",
+      "_type": "request",
+      "parentId": "fld_0117",
+      "name": "Read (um) - Buscar formação por ID",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/formacoes/{{ _.formacao_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 6400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0123",
+      "_type": "request",
+      "parentId": "fld_0117",
+      "name": "Update (completo) - PUT formação",
+      "description": "",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/formacoes/{{ _.formacao_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0124",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome_instituicao\": \"SENAC Ceará\",\n  \"nome_curso\": \"Cuidador de Idosos - Avançado\",\n  \"ano_conclusao\": 2022\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 6500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0125",
+      "_type": "request",
+      "parentId": "fld_0117",
+      "name": "Update (parcial) - PATCH formação",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/formacoes/{{ _.formacao_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0126",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome_curso\": \"Cuidador de Idosos - Módulo II\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 6600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0127",
+      "_type": "request",
+      "parentId": "fld_0117",
+      "name": "Delete - Excluir formação (lógico)",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/formacoes/{{ _.formacao_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 6700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0128",
+      "_type": "request",
+      "parentId": "fld_0117",
+      "name": "Update (parcial) - Reativar formação",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/formacoes/{{ _.formacao_id }}/status",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0129",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"ATIVO\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 6800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_0130",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "09 - Experiências do cuidador",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 6900
+    },
+    {
+      "_id": "req_0131",
+      "_type": "request",
+      "parentId": "fld_0130",
+      "name": "Create - Cadastrar experiência",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/experiencias",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0132",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"cargo\": \"Cuidadora de idosos\",\n  \"nome_local_trabalho\": \"Residencial Bem Viver\",\n  \"descricao\": \"Acompanhamento diário de idosos\",\n  \"ano_inicio\": 2019,\n  \"ano_fim\": 2023\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 7000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "afterResponseScript": "if (insomnia.response.code < 300) {\n  const b = insomnia.response.json();\n  insomnia.environment.set('experiencia_id', b.id);\n}\n"
+    },
+    {
+      "_id": "req_0133",
+      "_type": "request",
+      "parentId": "fld_0130",
+      "name": "Read (lista) - Listar experiências",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/experiencias",
+      "parameters": [
+        {
+          "id": "pair_0134",
+          "name": "status",
+          "value": "ATIVO",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 7100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0135",
+      "_type": "request",
+      "parentId": "fld_0130",
+      "name": "Read (um) - Buscar experiência por ID",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/experiencias/{{ _.experiencia_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 7200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0136",
+      "_type": "request",
+      "parentId": "fld_0130",
+      "name": "Update (completo) - PUT experiência",
+      "description": "PUT substitui tudo: descricao e ano_fim ausentes viram null (emprego atual).",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/experiencias/{{ _.experiencia_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0137",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome_local_trabalho\": \"Residencial Bem Viver\",\n  \"ano_inicio\": 2019\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 7300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0138",
+      "_type": "request",
+      "parentId": "fld_0130",
+      "name": "Update (parcial) - PATCH experiência",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/experiencias/{{ _.experiencia_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0139",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"ano_fim\": 2024\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 7400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0140",
+      "_type": "request",
+      "parentId": "fld_0130",
+      "name": "Delete - Excluir experiência (lógico)",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/experiencias/{{ _.experiencia_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 7500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0141",
+      "_type": "request",
+      "parentId": "fld_0130",
+      "name": "Update (parcial) - Reativar experiência",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/experiencias/{{ _.experiencia_id }}/status",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0142",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"ATIVO\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 7600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_0143",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "10 - Cidades de atuação do cuidador",
+      "description": "Vínculo N:N. PUT cria (201) ou reativa (200) o vínculo; DELETE inativa.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 7700
+    },
+    {
+      "_id": "req_0144",
+      "_type": "request",
+      "parentId": "fld_0143",
+      "name": "Create/Update - Vincular cidade (PUT)",
+      "description": "",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/cidades/{{ _.cidade_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 7800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0145",
+      "_type": "request",
+      "parentId": "fld_0143",
+      "name": "Read (lista) - Listar cidades de atuação",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/cidades",
+      "parameters": [
+        {
+          "id": "pair_0146",
+          "name": "status",
+          "value": "ATIVO",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 7900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0147",
+      "_type": "request",
+      "parentId": "fld_0143",
+      "name": "Read (um) - Buscar vínculo de cidade",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/cidades/{{ _.cidade_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 8000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0148",
+      "_type": "request",
+      "parentId": "fld_0143",
+      "name": "Delete - Desvincular cidade (lógico)",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/cidades/{{ _.cidade_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 8100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_0149",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "11 - Especializações do cuidador",
+      "description": "Vínculo N:N. PUT cria (201) ou reativa (200) o vínculo; DELETE inativa.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 8200
+    },
+    {
+      "_id": "req_0150",
+      "_type": "request",
+      "parentId": "fld_0149",
+      "name": "Create/Update - Vincular especialização (PUT)",
+      "description": "",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/especializacoes/{{ _.especializacao_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 8300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0151",
+      "_type": "request",
+      "parentId": "fld_0149",
+      "name": "Read (lista) - Listar especializações do cuidador",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/especializacoes",
+      "parameters": [
+        {
+          "id": "pair_0152",
+          "name": "status",
+          "value": "ATIVO",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 8400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0153",
+      "_type": "request",
+      "parentId": "fld_0149",
+      "name": "Read (um) - Buscar vínculo de especialização",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/especializacoes/{{ _.especializacao_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 8500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0154",
+      "_type": "request",
+      "parentId": "fld_0149",
+      "name": "Delete - Desvincular especialização (lógico)",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/especializacoes/{{ _.especializacao_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 8600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_0190",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "12 - Contratações",
+      "description": "Fluxo individual de contratação; crie e conclua o serviço antes de executar a pasta de avaliações.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 8700
+    },
+    {
+      "_id": "req_0191",
+      "_type": "request",
+      "parentId": "fld_0190",
+      "name": "Read - Prévia do termo (CONTRATANTE)",
+      "description": "Não cria a contratação. Os nomes e o conteúdo vêm do backend.",
+      "method": "GET",
+      "url": "{{ _.base_url }}/contratacoes/termo",
+      "parameters": [
+        {
+          "id": "pair_0192",
+          "name": "cuidador_id",
+          "value": "{{ _.cuidador_id }}",
+          "disabled": false
+        }
+      ],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_contratante }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 8800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0193",
+      "_type": "request",
+      "parentId": "fld_0190",
+      "name": "Create - Criar contratação (CONTRATANTE)",
+      "description": "Guarda o ID retornado em contratacao_id para as etapas seguintes.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/contratacoes",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0194",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"cuidador_id\": \"{{ _.cuidador_id }}\",\n  \"aceite_termo\": true\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_contratante }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 8900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "afterResponseScript": "if (insomnia.response.code < 300) {\n  const b = insomnia.response.json();\n  insomnia.environment.set('contratacao_id', b.id);\n}\n"
+    },
+    {
+      "_id": "req_0195",
+      "_type": "request",
+      "parentId": "fld_0190",
+      "name": "Read - Detalhes da contratação (participante)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/contratacoes/{{ _.contratacao_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_contratante }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 9000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0196",
+      "_type": "request",
+      "parentId": "fld_0190",
+      "name": "Update - Confirmar termo (CUIDADOR)",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/contratacoes/{{ _.contratacao_id }}/confirmacao",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 9100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0197",
+      "_type": "request",
+      "parentId": "fld_0190",
+      "name": "Update - Informar realização (CUIDADOR)",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/contratacoes/{{ _.contratacao_id }}/realizacao",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 9200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0198",
+      "_type": "request",
+      "parentId": "fld_0190",
+      "name": "Update - Confirmar realização (CONTRATANTE)",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/contratacoes/{{ _.contratacao_id }}/confirmacao-realizacao",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_contratante }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 9300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0199",
+      "_type": "request",
+      "parentId": "fld_0190",
+      "name": "Read - Listar meus serviços",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/contratacoes",
+      "parameters": [
+        {
+          "id": "pair_0200",
+          "name": "pagina",
+          "value": "1",
+          "disabled": false
+        },
+        {
+          "id": "pair_0201",
+          "name": "limite",
+          "value": "10",
+          "disabled": false
+        }
+      ],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_contratante }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 9400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_0155",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "13 - Avaliações",
+      "description": "Somente CONTRATANTE avalia; autor ou ADMIN alteram.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 9700
+    },
+    {
+      "_id": "req_0156",
+      "_type": "request",
+      "parentId": "fld_0155",
+      "name": "Create - Avaliar cuidador (CONTRATANTE)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/avaliacoes",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0157",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"contratacao_id\": \"{{ _.contratacao_id }}\",\n  \"nota\": 5,\n  \"comentario\": \"Excelente profissional, muito atenciosa.\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_contratante }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 8800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "afterResponseScript": "if (insomnia.response.code < 300) {\n  const b = insomnia.response.json();\n  insomnia.environment.set('avaliacao_id', b.id);\n}\n"
+    },
+    {
+      "_id": "req_0158",
+      "_type": "request",
+      "parentId": "fld_0155",
+      "name": "Read (lista) - Listar avaliações publicadas",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/avaliacoes",
+      "parameters": [
+        {
+          "id": "pair_0159",
+          "name": "pagina",
+          "value": "1",
+          "disabled": false
+        },
+        {
+          "id": "pair_0160",
+          "name": "limite",
+          "value": "10",
+          "disabled": false
+        },
+        {
+          "id": "pair_0161",
+          "name": "ordenar",
+          "value": "nota",
+          "disabled": true
+        },
+        {
+          "id": "pair_0162",
+          "name": "ordem",
+          "value": "asc",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 8900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0163",
+      "_type": "request",
+      "parentId": "fld_0155",
+      "name": "Read - Resumo das notas",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/avaliacoes/resumo",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 9000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0164",
+      "_type": "request",
+      "parentId": "fld_0155",
+      "name": "Read (um) - Buscar avaliação por ID",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/avaliacoes/{{ _.avaliacao_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_contratante }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 9100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0165",
+      "_type": "request",
+      "parentId": "fld_0155",
+      "name": "Update (completo) - PUT avaliação",
+      "description": "",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/avaliacoes/{{ _.avaliacao_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0166",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nota\": 4,\n  \"comentario\": \"Muito boa, só atrasou uma vez.\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_contratante }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 9200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0167",
+      "_type": "request",
+      "parentId": "fld_0155",
+      "name": "Update (parcial) - PATCH avaliação",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/avaliacoes/{{ _.avaliacao_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0168",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nota\": 5\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_contratante }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 9300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0169",
+      "_type": "request",
+      "parentId": "fld_0155",
+      "name": "Update (parcial) - Moderar status (ADMIN)",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/avaliacoes/{{ _.avaliacao_id }}/status",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0170",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"PUBLICADA\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 9400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0171",
+      "_type": "request",
+      "parentId": "fld_0155",
+      "name": "Delete - Excluir avaliação (lógico)",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/cuidadores/{{ _.cuidador_id }}/avaliacoes/{{ _.avaliacao_id }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_contratante }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 9500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0172",
+      "_type": "request",
+      "parentId": "fld_0155",
+      "name": "Update (parcial) - Republicar avaliação (ADMIN)",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/avaliacoes/{{ _.avaliacao_id }}/status",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0173",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"PUBLICADA\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 9600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_0174",
+      "_type": "request_group",
+      "parentId": "wrk_cuidaaqui",
+      "name": "14 - Resposta à avaliação",
+      "description": "Somente o cuidador avaliado responde; ADMIN modera o status.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 10700
+    },
+    {
+      "_id": "req_0175",
+      "_type": "request",
+      "parentId": "fld_0174",
+      "name": "Create - Responder avaliação (CUIDADOR)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/avaliacoes/{{ _.avaliacao_id }}/resposta",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0176",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"resposta\": \"Muito obrigada pela avaliação, João!\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 9800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0177",
+      "_type": "request",
+      "parentId": "fld_0174",
+      "name": "Read (um) - Ver resposta",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/avaliacoes/{{ _.avaliacao_id }}/resposta",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {},
+      "metaSortKey": 9900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0178",
+      "_type": "request",
+      "parentId": "fld_0174",
+      "name": "Update (completo) - PUT resposta",
+      "description": "PUT também reativa uma resposta INATIVO.",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/avaliacoes/{{ _.avaliacao_id }}/resposta",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0179",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"resposta\": \"Obrigada! Foi um prazer cuidar da sua mãe.\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 10000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0180",
+      "_type": "request",
+      "parentId": "fld_0174",
+      "name": "Update (parcial) - PATCH resposta",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/avaliacoes/{{ _.avaliacao_id }}/resposta",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0181",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"resposta\": \"Obrigada! (editado)\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 10100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0182",
+      "_type": "request",
+      "parentId": "fld_0174",
+      "name": "Delete - Excluir resposta (lógico)",
+      "description": "",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/avaliacoes/{{ _.avaliacao_id }}/resposta",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_cuidador }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 10200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_0183",
+      "_type": "request",
+      "parentId": "fld_0174",
+      "name": "Update (parcial) - Reativar resposta (ADMIN)",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/avaliacoes/{{ _.avaliacao_id }}/resposta/status",
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_0184",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"ATIVO\"\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token_admin }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 10300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    }
+  ]
+}

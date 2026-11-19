@@ -1,0 +1,513 @@
+============================================================
+1. AUTENTICACAO
+============================================================
+
+POST   /auth/login
+       Realizar login e autenticar um usuario.
+
+GET    /auth/config
+       Consultar a configuracao publica do login (ID do cliente Google).
+
+POST   /auth/google
+       Entrar com uma credencial do Google ou, no primeiro acesso, criar a conta.
+       Corpo: credencial, tipo_usuario (CUIDADOR ou CONTRATANTE).
+       Vincula a uma conta com o mesmo e-mail somente se o e-mail estiver confirmado
+       nela; caso contrario responde 409. Contas ADMIN nao sao vinculadas.
+
+POST   /auth/refresh
+       Renovar o token de acesso usando o cookie de sessao (HttpOnly).
+
+POST   /auth/logout
+       Encerrar a sessao do usuario e invalidar o cookie de sessao.
+
+GET    /auth/me
+       Consultar os dados do usuario autenticado.
+
+POST   /auth/verificacao-email/solicitar
+       Reenviar o link de confirmacao de e-mail.
+       Acesso: usuario autenticado.
+
+POST   /auth/verificacao-email/confirmar
+       Confirmar o e-mail com o token recebido no link.
+       Corpo: token.
+
+POST   /auth/recuperacao-senha/solicitar
+       Enviar um link para redefinir a senha.
+       Corpo: email.
+       Responde igual exista ou nao a conta.
+
+POST   /auth/recuperacao-senha/confirmar
+       Redefinir a senha com o token recebido no link e encerrar todas as sessoes.
+       Corpo: token, senha.
+
+
+============================================================
+2. USUARIOS
+============================================================
+
+GET    /usuarios
+       Listar usuarios cadastrados.
+       Parametros: tipo_usuario, status, nome, busca (nome ou e-mail), pagina, limite.
+       Acesso: ADMIN.
+
+GET    /usuarios/{usuarioId}
+       Consultar os dados de um usuario.
+       Acesso: proprio usuario ou ADMIN.
+
+POST   /usuarios
+       Cadastrar um novo usuario.
+       Tipos permitidos: CUIDADOR ou CONTRATANTE.
+       Cadastro de ADMIN restrito.
+       Envia o link de confirmacao de e-mail.
+
+PUT    /usuarios/{usuarioId}
+       Atualizar completamente os dados do usuario.
+       Para trocar a propria senha ou o proprio e-mail, informe tambem senha_atual.
+       Trocar o e-mail zera a confirmacao e envia um novo link.
+
+PATCH  /usuarios/{usuarioId}
+       Atualizar parcialmente os dados do usuario.
+       Para trocar a propria senha ou o proprio e-mail, informe tambem senha_atual.
+       Trocar o e-mail zera a confirmacao e envia um novo link.
+
+PATCH  /usuarios/{usuarioId}/tipo
+       Alterar o tipo de usuario.
+       Acesso: ADMIN.
+
+PATCH  /usuarios/{usuarioId}/status
+       Alterar o status da conta.
+       Valores: ATIVO, INATIVO ou BLOQUEADO.
+       Acesso: ADMIN.
+
+DELETE /usuarios/{usuarioId}
+       Desativar logicamente a conta.
+       Alterar status para INATIVO.
+
+
+============================================================
+3. FOTO DE PERFIL
+============================================================
+
+PUT    /usuarios/{usuarioId}/foto-perfil
+       Enviar ou substituir a foto de perfil.
+
+DELETE /usuarios/{usuarioId}/foto-perfil
+       Remover a foto e apagar sua referencia no banco.
+
+
+============================================================
+4. PERFIS DOS CUIDADORES
+============================================================
+
+GET    /cuidadores
+       Listar e pesquisar cuidadores.
+       Parametros:
+       - cidade_id
+       - uf
+       - especializacao_id
+       - anos_experiencia_min
+       - anos_experiencia_max
+       - funcao
+       - nome
+       - nota_minima
+       - pagina
+       - limite
+
+GET    /cuidadores/{cuidadorId}
+       Consultar o perfil publico de um cuidador.
+       Nao retornar o CPF.
+       O telefone_whatsapp so e retornado para usuarios logados.
+
+GET    /cuidadores/me
+       Consultar o proprio perfil completo.
+       Inclui o CPF, somente para o proprio cuidador.
+
+POST   /cuidadores
+       Criar o perfil profissional do cuidador.
+       Inclui CPF obrigatorio.
+
+PUT    /cuidadores/{cuidadorId}
+       Atualizar completamente o perfil profissional.
+
+PATCH  /cuidadores/{cuidadorId}
+       Atualizar parcialmente o perfil profissional.
+
+PATCH  /cuidadores/{cuidadorId}/cpf
+       Atualizar o CPF cadastrado.
+
+PATCH  /cuidadores/{cuidadorId}/status
+       Alterar o status do perfil.
+       Valores: ATIVO ou INATIVO.
+
+DELETE /cuidadores/{cuidadorId}
+       Desativar logicamente o perfil profissional.
+
+
+============================================================
+5. ESTADOS
+============================================================
+
+GET    /estados
+       Listar estados cadastrados.
+       Parametro: status.
+
+GET    /estados/{uf}
+       Consultar um estado pela sigla.
+
+POST   /estados
+       Cadastrar um estado.
+       Acesso: ADMIN.
+
+PUT    /estados/{uf}
+       Atualizar completamente um estado.
+       Acesso: ADMIN.
+
+PATCH  /estados/{uf}
+       Atualizar parcialmente um estado.
+       Acesso: ADMIN.
+
+PATCH  /estados/{uf}/status
+       Alterar status do estado.
+       Valores: ATIVO ou INATIVO.
+       Acesso: ADMIN.
+
+DELETE /estados/{uf}
+       Desativar logicamente o estado.
+       Acesso: ADMIN.
+
+
+============================================================
+6. CIDADES
+============================================================
+
+GET    /cidades
+       Listar cidades cadastradas.
+       Parametros: nome, uf, status, pagina, limite.
+
+GET    /cidades/{cidadeId}
+       Consultar uma cidade.
+
+POST   /cidades
+       Cadastrar uma cidade.
+       Acesso: ADMIN.
+
+PUT    /cidades/{cidadeId}
+       Atualizar completamente uma cidade.
+       Acesso: ADMIN.
+
+PATCH  /cidades/{cidadeId}
+       Atualizar parcialmente uma cidade.
+       Acesso: ADMIN.
+
+PATCH  /cidades/{cidadeId}/status
+       Alterar status da cidade.
+       Valores: ATIVO ou INATIVO.
+       Acesso: ADMIN.
+
+DELETE /cidades/{cidadeId}
+       Desativar logicamente a cidade.
+       Acesso: ADMIN.
+
+
+============================================================
+7. ESPECIALIZACOES
+============================================================
+
+GET    /especializacoes
+       Listar especializacoes cadastradas.
+       Parametro: status.
+
+GET    /especializacoes/{especializacaoId}
+       Consultar uma especializacao.
+
+POST   /especializacoes
+       Cadastrar uma especializacao.
+       Acesso: ADMIN.
+
+PUT    /especializacoes/{especializacaoId}
+       Atualizar completamente uma especializacao.
+       Acesso: ADMIN.
+
+PATCH  /especializacoes/{especializacaoId}
+       Atualizar parcialmente uma especializacao.
+       Acesso: ADMIN.
+
+PATCH  /especializacoes/{especializacaoId}/status
+       Alterar status da especializacao.
+       Valores: ATIVO ou INATIVO.
+       Acesso: ADMIN.
+
+DELETE /especializacoes/{especializacaoId}
+       Desativar logicamente a especializacao.
+       Acesso: ADMIN.
+
+
+============================================================
+8. FORMACOES E CURSOS
+============================================================
+
+GET    /cuidadores/{cuidadorId}/formacoes
+       Listar formacoes e cursos do cuidador.
+
+GET    /cuidadores/{cuidadorId}/formacoes/{formacaoId}
+       Consultar uma formacao especifica.
+
+POST   /cuidadores/{cuidadorId}/formacoes
+       Cadastrar uma nova formacao ou curso.
+       Corpo: nome_curso, nome_instituicao, ano_conclusao (opcional).
+
+PUT    /cuidadores/{cuidadorId}/formacoes/{formacaoId}
+       Atualizar completamente uma formacao.
+
+PATCH  /cuidadores/{cuidadorId}/formacoes/{formacaoId}
+       Atualizar parcialmente uma formacao.
+
+PATCH  /cuidadores/{cuidadorId}/formacoes/{formacaoId}/status
+       Alterar status da formacao.
+       Valores: ATIVO ou INATIVO.
+
+DELETE /cuidadores/{cuidadorId}/formacoes/{formacaoId}
+       Desativar logicamente a formacao.
+
+
+============================================================
+9. EXPERIENCIAS PROFISSIONAIS
+============================================================
+
+GET    /cuidadores/{cuidadorId}/experiencias
+       Listar experiencias profissionais do cuidador.
+
+GET    /cuidadores/{cuidadorId}/experiencias/{experienciaId}
+       Consultar uma experiencia especifica.
+
+POST   /cuidadores/{cuidadorId}/experiencias
+       Cadastrar uma nova experiencia profissional.
+       Corpo: cargo (opcional), nome_local_trabalho, descricao (opcional), ano_inicio, ano_fim (opcional).
+
+PUT    /cuidadores/{cuidadorId}/experiencias/{experienciaId}
+       Atualizar completamente uma experiencia.
+
+PATCH  /cuidadores/{cuidadorId}/experiencias/{experienciaId}
+       Atualizar parcialmente uma experiencia.
+
+PATCH  /cuidadores/{cuidadorId}/experiencias/{experienciaId}/status
+       Alterar status da experiencia.
+       Valores: ATIVO ou INATIVO.
+
+DELETE /cuidadores/{cuidadorId}/experiencias/{experienciaId}
+       Desativar logicamente a experiencia.
+
+
+============================================================
+10. CIDADES DE ATUACAO DOS CUIDADORES
+============================================================
+
+GET    /cuidadores/{cuidadorId}/cidades
+       Listar cidades de atuacao do cuidador.
+
+GET    /cuidadores/{cuidadorId}/cidades/{cidadeId}
+       Consultar uma cidade especifica do perfil.
+
+PUT    /cuidadores/{cuidadorId}/cidades/{cidadeId}
+       Adicionar uma cidade a regiao de atuacao.
+       Reativar o relacionamento caso esteja INATIVO.
+
+DELETE /cuidadores/{cuidadorId}/cidades/{cidadeId}
+       Remover uma cidade da regiao de atuacao.
+       Alterar status do relacionamento para INATIVO.
+
+
+============================================================
+11. ESPECIALIZACOES DOS CUIDADORES
+============================================================
+
+GET    /cuidadores/{cuidadorId}/especializacoes
+       Listar especializacoes do cuidador.
+
+GET    /cuidadores/{cuidadorId}/especializacoes/{especializacaoId}
+       Consultar uma especializacao especifica do perfil.
+
+PUT    /cuidadores/{cuidadorId}/especializacoes/{especializacaoId}
+       Adicionar uma especializacao ao perfil.
+       Reativar o relacionamento caso esteja INATIVO.
+
+DELETE /cuidadores/{cuidadorId}/especializacoes/{especializacaoId}
+       Remover uma especializacao do perfil.
+       Alterar status do relacionamento para INATIVO.
+
+
+============================================================
+12. AVALIACOES DOS CUIDADORES
+============================================================
+
+GET    /cuidadores/{cuidadorId}/avaliacoes
+       Listar as avaliacoes recebidas pelo cuidador.
+       Retornar somente avaliacoes com status PUBLICADA.
+       Permitir paginacao e ordenacao por data ou nota.
+
+GET    /cuidadores/{cuidadorId}/avaliacoes/resumo
+       Consultar o resumo das avaliacoes do cuidador.
+       Retornar:
+       - Media das notas.
+       - Quantidade total de avaliacoes publicadas.
+       - Quantidade de avaliacoes por nota (1 a 5).
+
+GET    /cuidadores/{cuidadorId}/avaliacoes/{avaliacaoId}
+       Consultar uma avaliacao especifica.
+
+POST   /cuidadores/{cuidadorId}/avaliacoes
+       Publicar uma avaliacao vinculada a uma contratacao concluida do cuidador.
+       Campos obrigatorios:
+       - contratacao_id (contratacao concluida, pertencente ao contratante logado).
+       - nota (1 a 5).
+       - comentario (ate 500 caracteres).
+       Acesso: CONTRATANTE.
+
+GET    /cuidadores/{cuidadorId}/avaliacoes/minha?contratacao_id={contratacaoId}
+       Consultar a avaliacao do contratante logado para uma contratacao.
+       Retorna null quando a contratacao ainda nao possui avaliacao.
+       Sem contratacao_id, consulta uma avaliacao historica sem servico associado.
+
+PUT    /cuidadores/{cuidadorId}/avaliacoes/{avaliacaoId}
+       Atualizar completamente uma avaliacao.
+       Acesso: contratante autor da avaliacao, somente nos primeiros minutos apos o envio
+       (AVALIACAO_EDICAO_MINUTOS, padrao 10) e enquanto o cuidador nao tiver respondido.
+       Fora do prazo: 403. ADMIN modera por PATCH /avaliacoes/{avaliacaoId}/status.
+
+PATCH  /cuidadores/{cuidadorId}/avaliacoes/{avaliacaoId}
+       Atualizar parcialmente uma avaliacao.
+       Acesso e prazo: os mesmos do PUT.
+
+PATCH  /avaliacoes/{avaliacaoId}/status
+       Alterar status da avaliacao.
+       Valores: PUBLICADA, OCULTA ou INATIVA.
+       Acesso: ADMIN.
+
+DELETE /cuidadores/{cuidadorId}/avaliacoes/{avaliacaoId}
+       Excluir logicamente uma avaliacao.
+       Alterar status para INATIVA.
+       Acesso: contratante autor, somente dentro do mesmo prazo de edicao.
+
+
+============================================================
+13. RESPOSTAS DAS AVALIACOES
+============================================================
+
+GET    /avaliacoes/{avaliacaoId}/resposta
+       Consultar a resposta do cuidador a uma avaliacao.
+
+POST   /avaliacoes/{avaliacaoId}/resposta
+       Cadastrar uma resposta para a avaliacao.
+       Campo obrigatorio:
+       - resposta (ate 500 caracteres).
+       Acesso: cuidador proprietario do perfil avaliado.
+
+PUT    /avaliacoes/{avaliacaoId}/resposta
+       Atualizar completamente a resposta.
+       Caso ja exista uma resposta inativa, permitir
+       sua reativacao e atualizacao.
+       Acesso: cuidador proprietario do perfil avaliado.
+
+PATCH  /avaliacoes/{avaliacaoId}/resposta
+       Atualizar parcialmente a resposta.
+       Acesso: cuidador proprietario do perfil avaliado.
+
+PATCH  /avaliacoes/{avaliacaoId}/resposta/status
+       Alterar status da resposta.
+       Valores: ATIVO ou INATIVO.
+       Acesso: ADMIN.
+
+DELETE /avaliacoes/{avaliacaoId}/resposta
+       Excluir logicamente a resposta.
+       Alterar status para INATIVO.
+       Acesso: cuidador proprietario do perfil avaliado.
+
+
+--- Denúncia de comentários ---
+POST   /api/avaliacoes/:id/denuncias           (logado, não autor, não admin) body: { motivo, detalhe? }
+GET    /api/moderacao/avaliacoes?situacao=DENUNCIADAS|OCULTAS   (ADMIN)
+GET    /api/moderacao/resumo                   (ADMIN)
+POST   /api/moderacao/avaliacoes/:id/decisao   (ADMIN) body: { decisao: OCULTAR | MANTER }
+Tabela: denuncias_avaliacoes (id, avaliacao_id, denunciante_id, motivo, detalhe, status ABERTA|PROCEDENTE|IMPROCEDENTE, resolvida_por, resolvida_em, criado_em)
+
+
+============================================================
+14. CONTRATACOES DE SERVICOS
+============================================================
+
+Todas as rotas abaixo ficam sob o prefixo /api.
+
+GET    /contratacoes/termo?cuidador_id={cuidadorId}
+       Gerar e consultar a previa do termo oficial para leitura.
+       Acesso: CONTRATANTE autenticado.
+       Nao cria contratacao; os nomes e o conteudo sao determinados pelo backend.
+
+POST   /contratacoes
+       Criar uma contratacao individual.
+       Acesso: CONTRATANTE.
+       Corpo: cuidador_id, aceite_termo (deve ser true).
+       O backend gera e armazena o termo com os nomes obtidos do banco e registra
+       a confirmacao do contratante na criacao.
+       Status inicial: AGUARDANDO_CONFIRMACAO_CUIDADOR.
+
+GET    /contratacoes
+       Listar somente contratacoes das quais o usuario autenticado participa.
+       Parametros opcionais: status, pagina, limite.
+       Acesso: CONTRATANTE ou CUIDADOR.
+
+GET    /contratacoes/{contratacaoId}
+       Consultar detalhes e conteudo historico do termo.
+       Acesso: somente contratante ou cuidador participante.
+
+PATCH  /contratacoes/{contratacaoId}/confirmacao
+       Confirmar a concordancia do cuidador com o termo.
+       Acesso: cuidador participante, somente enquanto AGUARDANDO_CONFIRMACAO_CUIDADOR.
+       Altera o status para CONFIRMADA.
+
+PATCH  /contratacoes/{contratacaoId}/realizacao
+       Informar que o servico foi realizado.
+       Acesso: cuidador participante, somente quando CONFIRMADA.
+       Altera o status para AGUARDANDO_CONFIRMACAO_CONTRATANTE.
+
+PATCH  /contratacoes/{contratacaoId}/confirmacao-realizacao
+       Confirmar a realizacao do servico.
+       Acesso: contratante participante, somente apos o cuidador informar a realizacao.
+       Altera o status para CONCLUIDA.
+
+Status: AGUARDANDO_CONFIRMACAO_CUIDADOR, CONFIRMADA,
+AGUARDANDO_CONFIRMACAO_CONTRATANTE ou CONCLUIDA.
+Cada contratacao e independente; o mesmo par pode possuir varias contratacoes.
+O conteudo e a versao do termo ficam armazenados, sem valores, datas agendadas,
+horarios ou condicoes comerciais.
+
+Respostas de erro das contratacoes:
+- 400: parametros, identificadores, filtros ou corpo invalidos.
+- 401: ausencia de autenticacao ou token invalido/expirado.
+- 403: tipo de usuario sem permissao para a operacao.
+- 404: cuidador ativo inexistente ou usuario nao participante da contratacao.
+- 409: transicao fora da ordem ou confirmacao/requisicao repetida.
+- 500: erro interno inesperado; corpo no formato {"erro":"Erro interno do servidor"}.
+
+As respostas de sucesso usam JSON. A criacao retorna 201 com o registro completo;
+as consultas e transicoes retornam 200. Listas usam {"dados":[...],"paginacao":{...}}.
+Os registros incluem os nomes das partes, termo_conteudo, termo_versao,
+termo_gerado_em, datas de confirmacao, status e, quando aplicavel,
+avaliacao_id e avaliacao_status. Somente os participantes veem os registros.
+
+
+15. ERROS DE AVALIACOES E RESPOSTAS
+============================================================
+
+As rotas de avaliacao e resposta seguem o prefixo /api. Erros comuns:
+- 400: nota fora de 1 a 5, comentario/resposta com mais de 500 caracteres,
+  contratacao_id ausente/invalido ou cuidador diferente da contratacao.
+- 401: usuario nao autenticado.
+- 403: tipo de usuario ou titular da acao sem permissao.
+- 404: avaliacao/contratacao inexistente ou nao acessivel.
+- 409: contratacao ainda nao concluida, avaliacao duplicada ou resposta ja existente.
+
+Uma avaliacao nova deve enviar contratacao_id, nota e comentario. O contratante
+deve ser dono da contratacao concluida, e o cuidador da rota deve ser o cuidador
+daquela contratacao. Cada contratacao aceita somente uma avaliacao, mesmo se
+ela for posteriormente inativada. Avaliacoes historicas sem contratacao_id
+continuam disponiveis.

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+  <defs>
+    <linearGradient id="wall" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fffaf1"/>
+      <stop offset="1" stop-color="#dcebea"/>
+    </linearGradient>
+    <linearGradient id="shirt" x1="0" x2="1">
+      <stop offset="0" stop-color="#54b0b5"/>
+      <stop offset="1" stop-color="#3b9299"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="480" fill="url(#wall)"/>
+  <rect x="45" y="38" width="180" height="245" rx="12" fill="#fff" stroke="#dfe3e2" stroke-width="14"/>
+  <rect x="58" y="51" width="154" height="219" fill="#d8edf0"/>
+  <circle cx="135" cy="150" r="55" fill="#b9dcdf"/>
+  <path d="M58 232c38-55 78-76 154-28v66H58z" fill="#91c9c8"/>
+  <rect y="356" width="640" height="124" fill="#c7a979"/>
+  <rect x="32" y="328" width="576" height="72" rx="36" fill="#a98b61"/>
+  <circle cx="245" cy="260" r="74" fill="#d5a77d"/>
+  <path d="M177 242c4-67 35-105 86-105 57 0 87 38 81 103-36-20-68-31-167 2z" fill="#ece8df"/>
+  <path d="M167 246c17-14 46-18 83-6 34 12 67 7 96-14l19 154H159z" fill="#f2eadc"/>
+  <circle cx="250" cy="254" r="7" fill="#5b4b43"/>
+  <path d="M225 286c18 14 38 14 55 0" fill="none" stroke="#5b4b43" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="450" cy="196" r="66" fill="#b97852"/>
+  <path d="M390 176c6-62 40-92 82-86 45 6 67 45 50 98-32-20-81-30-132-12z" fill="#2f3a3b"/>
+  <path d="M374 259c34-48 126-51 161 3l50 218H332z" fill="url(#shirt)"/>
+  <path d="M390 295c-42 34-63 79-71 133" fill="none" stroke="#b97852" stroke-width="34" stroke-linecap="round"/>
+  <path d="M535 292c38 35 47 83 33 132" fill="none" stroke="#b97852" stroke-width="34" stroke-linecap="round"/>
+  <path d="M384 304c35 22 70 22 102 0" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="8"/>
+  <circle cx="430" cy="188" r="6" fill="#382923"/>
+  <path d="M451 220c16 10 29 10 43 0" fill="none" stroke="#382923" stroke-width="4" stroke-linecap="round"/>
+  <g fill="#4aabb2">
+    <circle cx="575" cy="70" r="10"/>
+    <circle cx="595" cy="92" r="7"/>
+    <circle cx="552" cy="112" r="6"/>
+  </g>
+</svg>
