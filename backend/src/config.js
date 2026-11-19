@@ -22,9 +22,12 @@ if (producao && process.env.ADMIN_SENHA === SENHA_ADMIN_DE_EXEMPLO) {
   throw new Error('Troque a ADMIN_SENHA de exemplo antes de rodar em produção.')
 }
 
-// Em produção os links não podem cair no log, e o endereço deles não pode vir do cabeçalho Host.
-if (producao && !(process.env.SMTP_HOST && process.env.EMAIL_REMETENTE && process.env.FRONTEND_URL)) {
-  throw new Error('Defina no .env SMTP_HOST, EMAIL_REMETENTE e FRONTEND_URL para enviar e-mails em produção.')
+// Em produção o endereço dos links não pode vir do cabeçalho Host.
+if (producao && !process.env.FRONTEND_URL) {
+  throw new Error('Defina FRONTEND_URL em produção.')
+}
+if (producao && !process.env.SMTP_HOST) {
+  console.warn('SMTP_HOST não definido em produção: os links de e-mail aparecerão apenas no log do servidor.')
 }
 
 const smtpPorta = Number(process.env.SMTP_PORTA) || 587
