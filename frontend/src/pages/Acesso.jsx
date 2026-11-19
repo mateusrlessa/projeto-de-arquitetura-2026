@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Navigate, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate, useNavigationType, useSearchParams } from 'react-router-dom'
 import BotaoGoogle from '../components/BotaoGoogle.jsx'
 import Campo, { estiloInput } from '../components/Campo.jsx'
 import { Alerta, Coracao, Escudo, Olho, OlhoRiscado, Pessoas } from '../components/Icones.jsx'
@@ -38,7 +38,8 @@ export default function Acesso() {
   const { usuario } = useAuth()
   const [jaLogado] = useState(Boolean(usuario))
   const [params] = useSearchParams()
-  const [ativa, setAtiva] = useState(params.get('aba') === 'criar' ? 'criar' : 'entrar')
+  const abaDaUrl = params.get('aba') === 'criar' ? 'criar' : 'entrar'
+  const [ativa, setAtiva] = useState(abaDaUrl)
   // O e-mail digitado acompanha a pessoa ao trocar de aba.
   const [email, setEmail] = useState('')
   // O foco só vai para o primeiro campo depois de uma troca feita pela pessoa, não ao abrir a página.
@@ -46,6 +47,15 @@ export default function Acesso() {
   const abas = useRef({})
   const local = useLocation()
   const navegar = useNavigate()
+  const tipoNavegacao = useNavigationType()
+
+  // Os links "Entrar" e "Criar conta" do menu abrem esta mesma página: a cada clique neles
+  // (mesmo já estando aqui), a aba volta a seguir o endereço.
+  const [ultimaNavegacao, setUltimaNavegacao] = useState(local.key)
+  if (local.key !== ultimaNavegacao) {
+    setUltimaNavegacao(local.key)
+    if (tipoNavegacao === 'PUSH') setAtiva(abaDaUrl)
+  }
 
   const { aviso, voltarPara } = local.state ?? {}
 
