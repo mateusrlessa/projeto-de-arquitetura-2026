@@ -217,7 +217,7 @@ function Formulario({ modo, voltarPara, emailInicial, aoAlterarEmail, autoFocar,
             {TIPOS.map(({ valor, titulo, legenda, icone: Icone }) => (
               <label
                 key={valor}
-                className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-marca/40 ${
+                className={`flex min-w-0 cursor-pointer flex-col items-center gap-2 rounded-xl border p-3 text-center transition has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-marca/40 sm:flex-row sm:gap-3 sm:text-left ${
                   tipo === valor ? 'border-marca bg-marca-clara' : 'border-borda hover:border-marca/50'
                 }`}
               >
@@ -225,9 +225,9 @@ function Formulario({ modo, voltarPara, emailInicial, aoAlterarEmail, autoFocar,
                 <span className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${tipo === valor ? 'bg-marca text-white' : 'bg-marca-clara text-marca'}`}>
                   <Icone tamanho={18} />
                 </span>
-                <span className="leading-tight">
+                <span className="min-w-0 max-w-full leading-tight [overflow-wrap:anywhere]">
                   <span className="block text-sm font-semibold">{titulo}</span>
-                  <span className="text-xs text-suave">{legenda}</span>
+                  <span className="block text-xs text-suave">{legenda}</span>
                 </span>
               </label>
             ))}
